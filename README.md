@@ -2,7 +2,7 @@
 
 **Maintenance and production in one app, for small and mid-sized manufacturers.**
 
-[Live site](https://vmaint.com) &nbsp;·&nbsp; [Open the live demo (no signup)](https://demo.vmaint.com) &nbsp;·&nbsp; [Contact](https://vmaint.com/contact)
+[Live site](https://vmaint.com) &nbsp;·&nbsp; [Open the live demo (no signup)] &nbsp;·&nbsp; [Contact](https://vmaint.com/contact)
 
 vMaint runs the maintenance and production sides of a shop floor from one place:
 work orders, preventive maintenance, spare-parts inventory, live downtime
@@ -23,8 +23,6 @@ enterprise system. Mobile-first, live the same day, no long rollout.
 You can open the actual product in your browser, switch between four roles
 (operator, technician, ops lead, manager), and poke around a sample molding
 plant. Nothing you do is saved.
-
-**[demo.vmaint.com](https://demo.vmaint.com)**
 
 ## What it does
 
