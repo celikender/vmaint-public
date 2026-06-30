@@ -13,7 +13,8 @@ behind it. It describes the design, not the proprietary source.
   for tenant isolation.
 - **NextAuth v5** (Google, Microsoft, and email/password) with JWT sessions.
 - **Stripe** for subscription billing, **Resend** for transactional email.
-- A **FastAPI** service for the AI layer.
+- A separate **Python service (FastAPI)** for the AI layer.
+- **WebSockets** for real-time updates across every role and the shop-floor TV.
 - **Vercel** for hosting, with a Neon database branch per preview deploy.
 
 ## Tenant isolation at the database, not the application
@@ -61,18 +62,20 @@ site embeds it so a visitor can try the product without an account.
 
 ## The AI layer
 
-Because maintenance, production, vendor work, and machine data live in one
-record, the AI layer can reason over the actual shop instead of guessing. It
-reads equipment manuals, fault history, and machine readings, answers error
-codes and troubleshooting questions, and, with a confirmation step, can act, such
-as opening a work order or logging a part used. It runs as its own service and
-can also be reached through a standard AI assistant.
+The AI runs as a **separate Python service (FastAPI)**, deployed independently
+from the web app so the heavier reasoning work scales on its own. Because
+maintenance, production, vendor work, and machine data all live in one record, it
+can reason over the actual shop instead of guessing: it reads equipment manuals,
+fault history, and machine readings, answers error codes and troubleshooting
+questions, and, with a confirmation step, can act, such as opening a work order or
+logging a part used. It can also be reached through a standard AI assistant.
 
 ## Real-time floor
 
-Work-order updates, andon calls, and safety alerts propagate over WebSockets, so
-every role and the shop-floor TV see the floor change live rather than on a
-refresh.
+Work-order updates, andon calls, and floor-wide safety alerts propagate over
+**WebSockets**, so every role, and the shop-floor TV kiosk, see the floor change
+live rather than on a refresh. A safety warning reaches every user on the floor at
+once.
 
 ## Deploys
 

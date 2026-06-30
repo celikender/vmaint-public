@@ -2,7 +2,7 @@
 
 **Maintenance and production in one app, for small and mid-sized manufacturers.**
 
-[Live site](https://vmaint.com) &nbsp;·&nbsp; [Open the live demo (no signup)](https://demo.vmaint.com) &nbsp;·&nbsp; [Contact](https://vmaint.com/contact)
+[Live site](https://vmaint.com) &nbsp;·&nbsp; [Contact](https://vmaint.com/contact)
 
 vMaint runs the maintenance and production sides of a shop floor from one place:
 work orders, preventive maintenance, spare-parts inventory, live downtime
@@ -20,11 +20,11 @@ enterprise system. Mobile-first, live the same day, no long rollout.
 
 ## Try it, no signup
 
-You can open the actual product in your browser, switch between four roles
-(operator, technician, ops lead, manager), and poke around a sample molding
+The homepage runs the actual product live in the browser. Switch between four
+roles (operator, technician, ops lead, manager) and poke around a sample molding
 plant. Nothing you do is saved.
 
-**[demo.vmaint.com](https://demo.vmaint.com)**
+**[vmaint.com](https://vmaint.com)**
 
 ## What it does
 
@@ -46,15 +46,21 @@ plant. Nothing you do is saved.
 
 ## How it is built
 
-- **Next.js 16** (App Router) and **React 19**
-- **Tailwind CSS v4** with **shadcn/ui**
-- **Drizzle ORM** over **PostgreSQL** (Neon), with **row-level security** for hard
-  multi-tenant isolation enforced by the database, not the application
-- **NextAuth v5** (Google, Microsoft, email and password)
-- **Stripe** for subscription billing, **Resend** for transactional email
-- A **FastAPI** service for the AI layer
-- Deployed on **Vercel**, with a Neon database branch per preview deploy, and
-  real-time updates over WebSockets
+- **App** — **Next.js 16** (App Router) and **React 19**, with **Tailwind CSS v4**
+  and **shadcn/ui**.
+- **Data** — **Drizzle ORM** over **PostgreSQL** (Neon), with **row-level
+  security** for hard multi-tenant isolation enforced by the database, not the
+  application.
+- **Auth, billing, email** — **NextAuth v5** (Google, Microsoft, email and
+  password), **Stripe** for subscription billing, **Resend** for transactional
+  email.
+- **AI service** — a separate **Python service (FastAPI)** runs the AI layer,
+  deployed independently from the web app so the heavier reasoning work scales on
+  its own.
+- **Real-time** — live updates over **WebSockets**, so andon calls, work-order
+  changes, and floor-wide safety alerts reach every role and the shop-floor TV the
+  instant they happen.
+- **Hosting** — **Vercel**, with a Neon database branch per preview deploy.
 
 A deeper engineering write-up is in **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
