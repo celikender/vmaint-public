@@ -63,12 +63,17 @@ site embeds it so a visitor can try the product without an account.
 ## The AI layer
 
 The AI runs as a **separate Python service (FastAPI)**, deployed independently
-from the web app so the heavier reasoning work scales on its own. Because
-maintenance, production, vendor work, and machine data all live in one record, it
-can reason over the actual shop instead of guessing: it reads equipment manuals,
-fault history, and machine readings, answers error codes and troubleshooting
-questions, and, with a confirmation step, can act, such as opening a work order or
-logging a part used. It can also be reached through a standard AI assistant.
+from the web app so the heavier work scales on its own. A provider layer lets it
+switch between hosted models and a local one without changing the callers.
+
+Today it identifies parts from a photo and reads bin labels for the inventory
+screens. The web app calls it from the server with a shared service token, and
+the tenant it forwards comes from the signed-in session, never from the browser.
+
+Chat and work-order troubleshooting are in progress. They are designed around the
+fact that maintenance, production, vendor work, and machine data all live in one
+record, so the AI can reason over the actual shop instead of guessing, and any
+action it proposes waits for a person to confirm.
 
 ## Real-time floor
 

@@ -50,7 +50,7 @@ One app, with a view built for each job on the floor. All screens below are from
 | **Production** | Running, idle, and down status, downtime reasons, output against target, and OEE per machine and shift. |
 | **Floor communication** | Team board, andon calls, floor-wide safety alerts, shift pass-downs, and a shop-floor TV kiosk. |
 | **Outside vendors** | A no-login portal so a contractor can report work on the record. |
-| **AiTech** | An AI assistant for parts, procedures, machine issues, and work orders. |
+| **AiTech** | Identifies parts from a photo and reads bin labels today, running on a separate AI service with switchable models. Chat and troubleshooting are in progress. |
 | **Machine data** | Optional SCADA, PLC, and IoT integration, set up and quoted per shop. |
 
 ## How I designed it
