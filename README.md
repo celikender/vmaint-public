@@ -1,89 +1,131 @@
+<div align="center">
+
+<img src="docs/screenshots/logo.png" alt="vMaint logo" width="88" />
+
 # vMaint
 
 **Maintenance and production in one app, for small and mid-sized manufacturers.**
 
-[Live site](https://vmaint.com) &nbsp;·&nbsp; [Contact](https://vmaint.com/contact)
+[**Try the live demo**](https://demo.vmaint.com/demo) &nbsp;·&nbsp; [Website](https://vmaint.com) &nbsp;·&nbsp; [Architecture](docs/ARCHITECTURE.md) &nbsp;·&nbsp; [Contact](https://vmaint.com/contact)
 
-vMaint runs the maintenance and production sides of a shop floor from one place:
-work orders, preventive maintenance, spare-parts inventory, live downtime
-tracking, and machine performance (OEE), with an AI layer that troubleshoots the
-faults that keep coming back. It does the work a small plant would otherwise
-split across a CMMS, an MES, and a stack of spreadsheets, priced flat per site
-with the whole team included.
+<br />
 
-Built for shops that have outgrown spreadsheets but do not need a heavy
-enterprise system. Mobile-first, live the same day, no long rollout.
+<img src="docs/screenshots/manager-dashboard.png" alt="vMaint manager dashboard showing open work orders, PM compliance, machines down, plant OEE, and a list of what needs attention" width="100%" />
 
-> This repository is a public showcase of the vMaint project. The product itself
-> is proprietary and runs at **[vmaint.com](https://vmaint.com)**. This repo
-> exists to document what vMaint is, how it is built, and who builds it.
+</div>
 
-## Try it, no signup
+<br />
 
-The homepage runs the actual product live in the browser. Switch between four
-roles (operator, technician, ops lead, manager) and poke around a sample molding
-plant. Nothing you do is saved.
+## What it is
 
-**[vmaint.com](https://vmaint.com)**
+Small plants usually run on paper, spreadsheets, and group chats, or they split the work across a CMMS, an MES, and tools that never talk to each other. Enterprise systems are too heavy and too expensive for them.
+
+vMaint puts that work in one app: work orders, preventive maintenance, spare parts, downtime tracking, and machine performance (OEE). Operators, technicians, ops leads, and managers share the same live picture of the floor. It runs on the phones people already carry, and setup takes about an hour.
+
+> This repository is a public showcase. It documents what vMaint is, how it is built, and who builds it. The product itself is proprietary and runs at [vmaint.com](https://vmaint.com).
+
+## See it
+
+One app, with a view built for each job on the floor. All screens below are from the [live demo](https://demo.vmaint.com/demo), which runs on a sample injection-molding plant with no signup. Nothing you do there is saved.
+
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="docs/screenshots/operator-status.png" alt="Operator screen with one-tap Running, Idle, and Down buttons and a shift pass-down note" /><br /><sub><b>Operator</b><br />One tap for machine status, plus shift pass-downs</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/technician-work-orders.png" alt="Technician work order list with overdue, corrective, and preventive jobs" /><br /><sub><b>Technician</b><br />Work orders, with LOTO status on each job</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/technician-inventory.png" alt="Inventory list with barcode and bin scanning and low-stock flags" /><br /><sub><b>Inventory</b><br />Scan a code or a bin, see what is low or out</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/ops-lead-floor.png" alt="Ops lead floor view with andon calls, machines down, and status for every machine" /><br /><sub><b>Ops lead</b><br />Andon calls and live status for every machine</sub></td>
+    <td align="center"><img src="docs/screenshots/ops-lead-oee.png" alt="OEE screen with plant OEE and a card for each machine, worst first" /><br /><sub><b>OEE</b><br />Plant and per-machine performance, worst first</sub></td>
+    <td align="center"><img src="docs/screenshots/team-board.png" alt="Team board with alerts and notes from the floor" /><br /><sub><b>Team board</b><br />Alerts and notes that replace the group chat</sub></td>
+  </tr>
+</table>
 
 ## What it does
 
-- **Work orders and preventive maintenance** — report a problem from the machine
-  with a photo and a work order opens itself; recurring PMs schedule themselves.
-- **Spare-parts inventory** — barcode and bin scanning from a phone, with
-  low-stock alerts and reorder tracking.
-- **Live OEE and downtime** — operators tap running, idle, or down; production
-  tracks against target; OEE is computed per machine and per shift, with no MES
-  and no hardware to start.
-- **AiTech** — an AI layer that reads your manuals, fault history, and machine
-  data to answer error codes, troubleshoot recurring faults, and open work
-  orders by conversation.
-- **One floor, four roles** — operators, technicians, ops leads, and managers
-  each get their own view, sharing a real-time team board, andon alerts, and a
-  shop-floor TV kiosk.
-- **Connect your machines** — optional SCADA, PLC, and IoT integration set up per
-  shop, with an on-prem and edge option that keeps machine data on site.
+| Area | What you get |
+|---|---|
+| **Maintenance** | Work orders from a phone, with photos. Preventive maintenance that schedules itself. LOTO records and asset history. |
+| **Inventory** | Barcode and bin scanning, low-stock alerts, and a request, order, and receive flow. |
+| **Production** | Running, idle, and down status, downtime reasons, output against target, and OEE per machine and shift. |
+| **Floor communication** | Team board, andon calls, floor-wide safety alerts, shift pass-downs, and a shop-floor TV kiosk. |
+| **Outside vendors** | A no-login portal so a contractor can report work on the record. |
+| **AiTech** | An AI assistant for parts, procedures, machine issues, and work orders. |
+| **Machine data** | Optional SCADA, PLC, and IoT integration, set up and quoted per shop. |
 
-## How it is built
+## How I designed it
 
-- **App** — **Next.js 16** (App Router) and **React 19**, with **Tailwind CSS v4**
-  and **shadcn/ui**.
-- **Data** — **Drizzle ORM** over **PostgreSQL** (Neon), with **row-level
-  security** for hard multi-tenant isolation enforced by the database, not the
-  application.
-- **Auth, billing, email** — **NextAuth v5** (Google, Microsoft, email and
-  password), **Stripe** for subscription billing, **Resend** for transactional
-  email.
-- **AI service** — a separate **Python service (FastAPI)** runs the AI layer,
-  deployed independently from the web app so the heavier reasoning work scales on
-  its own.
-- **Real-time** — live updates over **WebSockets**, so andon calls, work-order
-  changes, and floor-wide safety alerts reach every role and the shop-floor TV the
-  instant they happen.
-- **Hosting** — **Vercel**, with a Neon database branch per preview deploy.
+I worked as a mechanical engineer, then on the floor as an operator and technician, then moved into automation, SCADA, and software development. Most of the design below comes from having been the person using this kind of software.
 
-A deeper engineering write-up is in **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
+**The floor comes first.** Someone standing at a faulted machine will not fill in a long form. So the main actions are one tap or one photo, and the app installs on any phone with no app store.
 
-## Who builds it
+**It works before anything is wired up.** Most small plants have no SCADA and no budget for a long integration. Operators tap Running, Idle, or Down, and that alone produces downtime and availability data. Machine connections can come later.
 
-vMaint is built by **Ender Celik**, a mechanical engineer who has worked every
-side of the operation: machine operator, maintenance technician, and automation
-and SCADA engineer.
+**One record instead of three systems.** Maintenance and production read and write the same data. A fault, its work order, the parts used, and the downtime it caused all sit together, so nobody has to reconcile separate tools.
 
-On each side he saw the same gap, that engineering strategy and the day-to-day
-reality of the floor rarely line up, so operations, maintenance, and engineering
-end up working around each other. vMaint exists to put everyone on one shared
-picture instead. It is built by someone who has stood in front of a faulted line
-at 2 a.m., not by people who have never run a machine.
+**One app, four roles.** All four roles run the same application, gated by capability flags rather than separate builds. That keeps one code path, and it keeps a manager on the floor and an operator at a machine looking at the same facts.
 
-- Live product: **[vmaint.com](https://vmaint.com)**
-- Get in touch: **[vmaint.com/contact](https://vmaint.com/contact)**
+**Tenant isolation lives in the database.** Every tenant table has Postgres row-level security. Outside the one function that sets the tenant for a transaction, queries return zero rows, so a forgotten filter cannot leak another company's data.
+
+```ts
+// Outside withTenant(), RLS returns zero rows. That is the safety guarantee.
+const list = await withTenant(org.id, (tx) => tx.select().from(assets));
+```
+
+**The AI service is separate, and its models are switchable.** It runs on its own Python service, so heavier work scales apart from the web app. A provider layer lets it change between hosted models and a local one, which matters to plants that want their data to stay on site.
+
+**The demo cannot touch production.** It is the real app on an isolated deployment with an in-memory seed and no production data or credentials, so anyone can click anything.
+
+**Pricing follows the design.** If the whole floor shares one record, charging per person works against the product. vMaint is priced flat per site, with the whole team included.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    floor["Phones and shop-floor TV<br/>installable web app"] --> app
+    desk["Manager desktop"] --> app
+    app["Next.js 16 app<br/>one codebase, four roles"] --> db[("PostgreSQL on Neon<br/>row-level security")]
+    app --> ai["AI service<br/>Python and FastAPI"]
+    app --> rt["Real-time updates<br/>WebSockets"]
+    rt --> floor
+    rt --> desk
+    app --> ext["Stripe billing<br/>Resend email"]
+```
+
+The full engineering write-up is in **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
+
+| Layer | Technology |
+|---|---|
+| **Web app** | Next.js 16 (App Router), React 19, TypeScript |
+| **UI** | Tailwind CSS v4, shadcn/ui |
+| **Data** | PostgreSQL (Neon), Drizzle ORM, row-level security |
+| **Auth** | NextAuth v5: Google, Microsoft, and email with password |
+| **AI service** | Python, FastAPI, with a switchable model provider layer |
+| **Real-time** | WebSockets (Pusher), plus web push notifications |
+| **Billing and email** | Stripe, Resend |
+| **Hosting** | Vercel for the app, Railway for the AI service |
+| **Testing** | Vitest, Playwright, GitHub Actions |
+
+## Pricing
+
+| Plan | Price | For |
+|---|---|---|
+| **Maintenance** | $200 per site a month | Work orders, PMs, parts, and inventory |
+| **Operations** | $600 per site a month | Adds live OEE, downtime, andon, and role dashboards |
+| **Connected** | Custom quote | Adds SCADA and IoT integration, built with you |
+
+The whole team is included on every plan. Maintenance and Operations start with a 30-day free trial, with no credit card. See [vmaint.com](https://vmaint.com/#pricing) for details.
 
 ## Status
 
-Early-stage and in production. The live app and the no-login demo above are real.
+Live in production at [vmaint.com](https://vmaint.com). Cloud now. Local install coming soon. In the public demo, AiTech and outside integrations are simulated, and the demo says so on screen.
+
+## About
+
+Built by **Ender Celik**. I worked as a mechanical engineer, then on the floor as an operator and technician, then moved into automation, SCADA, and software development.
+
+[LinkedIn](https://www.linkedin.com/in/endercelik) &nbsp;·&nbsp; [GitHub](https://github.com/celikender) &nbsp;·&nbsp; [Other projects](https://vmaint.com/projects) &nbsp;·&nbsp; [Contact](https://vmaint.com/contact)
 
 ## License
 
-The vMaint name, brand, product, and source code are proprietary. See
-[LICENSE](LICENSE).
+The vMaint name, brand, product, and source code are proprietary. See [LICENSE](LICENSE).
